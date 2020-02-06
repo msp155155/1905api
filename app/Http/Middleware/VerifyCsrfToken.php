@@ -22,5 +22,6 @@ class VerifyCsrfToken extends Middleware
         'test*',
         'api*',
         '/gitpull', //////////
+        '/postman1'
     ];
 }

@@ -69,4 +69,9 @@ Route::get('/test/sign2','TestController@sign2');
 //自动上线
 Route::post('/gitpull','TestController@gitpull');
 
+//接口防刷
+Route::post('/postman1','Api\TestController@postman1')->middleware('checkToken');
+//phpInfo
+Route::get('/info','Api\TestController@info');
+
 
