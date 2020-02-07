@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redis;
-
+use GuzzleHttp\Client;
 use App\Model\UserModel;
 
 class TestController extends Controller
@@ -204,6 +204,52 @@ class TestController extends Controller
 //        // 访问数 +1
 //        $count = Redis::incr($key);
 //        echo 'count: '.$count;
+
+    }
+
+
+    public  function md5test()
+    {
+        $data = "马苏鹏";//发送的数据
+        $key = '1905';//计算签名的key  发送端与接收端相同
+        //计算签名规则  MD5($data . $key)
+        $signature = md5($data . $key);
+//        $signature = "msp155155";
+        $url = "http://laravel.1905.com/test/get?data=".$data . '&signature='.$signature;
+        echo $url;echo '<hr>';
+        $response = file_get_contents($url);
+        echo $response;
+    }
+
+    public function sign2()
+    {
+        $key = "1905";          // 签名使用key  发送端与接收端 使用同一个key 计算签名
+        //待签名的数据
+        $order_info = [
+            "order_id"          => 'LN_' . mt_rand(111111,999999),
+            "order_amount"      => mt_rand(111,999),
+            "uid"               => 123,
+            "add_time"          => time(),
+        ];
+
+        $data_json = json_encode($order_info);
+
+        //计算签名
+        $sign = md5($data_json.$key);
+
+        // post 表单（form-data）发送数据
+        $client = new Client();
+        $url = 'http://laravel.1905.com/test/post';
+        $response = $client->request("POST",$url,[
+            "form_params"   => [
+                "data"  => $data_json,
+                "sign"  => $sign
+            ]
+        ]);
+
+        //接收服务器端响应的数据
+        $response_data = $response->getBody();
+        echo $response_data;
 
     }
 

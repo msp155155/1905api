@@ -73,5 +73,7 @@ Route::post('/gitpull','TestController@gitpull');
 Route::post('/postman1','Api\TestController@postman1')->middleware('checkToken');
 //phpInfo
 Route::get('/info','Api\TestController@info');
+Route::get('/get','Api\TestController@md5test');
+Route::get('/post','Api\TestController@sign2');
 
 
