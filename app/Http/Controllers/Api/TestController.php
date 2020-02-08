@@ -269,6 +269,8 @@ class TestController extends Controller
         //base64源码  方便传输
         $sign_str = base64_encode($signature);
         echo "base64encode 后的签名：".$sign_str;
+        $a = file_get_contents('http://laravel.1905.com/test/sign3Md5?data='.$data.'&sign_str='.$sign_str);
+        echo $a;
 
     }
 
