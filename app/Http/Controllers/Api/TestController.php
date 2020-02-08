@@ -253,6 +253,25 @@ class TestController extends Controller
 
     }
 
+    public  function sign3()
+    {
+        $data = 'Hello Word';//代签名的数据
+
+        //计算签名
+        $path = storage_path('keys/priv.key');//私钥的路径
+        $pkeyid = openssl_pkey_get_private('file://'.$path);
+        echo $path.'===';echo $pkeyid;
+        //计算签名 得到$signature
+        openssl_sign($data,$signature,$pkeyid);
+        openssl_free_key($pkeyid);
+        var_dump($signature);
+
+        //base64源码  方便传输
+        $sign_str = base64_encode($signature);
+        echo "base64encode 后的签名：".$sign_str;
+
+    }
+
 
 
 }
