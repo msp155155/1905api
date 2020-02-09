@@ -259,7 +259,7 @@ class TestController extends Controller
 
         //计算签名
         $path = storage_path('keys/priv.key');//私钥的路径
-        $pkeyid = openssl_pkey_get_private('file://'.$path);
+        $pkeyid = openssl_pkey_get_private('file://'.$path);//获取密钥
         echo $path.'===';echo $pkeyid;
         //计算签名 得到$signature
         openssl_sign($data,$signature,$pkeyid);
