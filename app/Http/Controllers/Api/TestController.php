@@ -263,15 +263,27 @@ class TestController extends Controller
         echo $path.'===';echo $pkeyid;
         //计算签名 得到$signature
         openssl_sign($data,$signature,$pkeyid);
-        openssl_free_key($pkeyid);
+        openssl_free_key($pkeyid);//释放密钥
         var_dump($signature);
 
         //base64源码  方便传输
         $sign_str = base64_encode($signature);
         echo "base64encode 后的签名：".$sign_str;
-        $a = file_get_contents('http://laravel.1905.com/test/sign3Md5?data='.$data.'&sign_str='.$sign_str);
+        $a = file_get_contents('http://laravel.1905.com/test/check3?data='.$data.'&sign_str='.$sign_str);
         echo $a;
+    }
 
+    public function ecrypt2()
+    {
+        $data = 'Hello Word';//代签名的数据
+
+        //计算签名
+        $path = storage_path('keys/priv.key');//私钥的路径
+        $pkeyid = openssl_pkey_get_private('file://'.$path);//获取密钥
+        openssl_private_encrypt($data,$encrypt_data,$pkeyid,OPENSSL_PKCS1_PADDING);//加密
+        $base64_str = base64_encode($encrypt_data);//容易传输
+        $a = file_get_contents('http://laravel.1905.com/test/ecrypt2?data='.$data.'&base64_str_str='.$base64_str);
+        echo $a;
     }
 
 
